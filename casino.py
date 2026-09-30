@@ -1,4 +1,5 @@
 import random as ran
+import time as time
 #colors
 reset = '\033[0m'
 red = '\033[31m'
@@ -9,13 +10,25 @@ cyan = '\033[36m'
 bold = '\033[1m'
 #variables
 money = 200
-#functions
+#reset
 print(reset)
+#functions
 def line():
     print(f"{bold}-------------------------{reset}")
 def showMoney():
     global money
     print(f"You have {bold}{green}${money}{reset}")
+def randomCard():
+    cardNums = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"]
+    suits = ["clubs", "hearts", "spades", "diamonds"]
+    card = {"num": ran.choice(cardNums), "suit": ran.choice(suits)}
+    return card
+def loadGame(title):
+    print(f"{red}{bold}Running {title}...{reset}")
+    time.sleep(ran.randint(65,100)/100)
+    print(f"{red}{bold}Success{reset}")
+    time.sleep(ran.randint(15,35)/100)
+
 #game selection
 def gameSelection():
     global gameLibrary
@@ -33,14 +46,16 @@ def gameSelection():
 
 #games
 def blackjack():
-    None
-
+    loadGame("Blackjack")
+    dealerCards = [randomCard(), randomCard()]
+    playercards = [randomCard(), randomCard()]
+    print(f'The dealer has a [?] and a {dealerCards[1]["num"]} of {dealerCards[1]["suit"]}')
 #game player
 def playGame(): 
     global gameLibrary
     global game
     global money
-    if game == 1:
+    if game == "1":
         blackjack()
 
 #start
