@@ -20,17 +20,22 @@ def showMoney():
     print(f"You have {bold}{green}${money}{reset}")
 def determineTotal(cards):
     total = 0
-    tens = ["10♤", "J♤", "Q♤", "K♤", "10♧", "J♧", "Q♧", "K♧", "10♡", "J♡", "Q♡", "K♡", "10♢", "J♢", "Q♢", "K♢", ]
-    for x in len(cards):
-        if cards[0] in tens:
+    aces = 0
+    for card in cards:
+        value = card[:-1]
+        if value in ("10", "J", "Q", "K"):
             total += 10
-        elif "A" in cards[0]:
-            if total >= 21:
-                total += 1
-            else:
-                total += 10
+        elif value == "A":
+            total += 11
+            aces += 1
         else:
-            total += int(cards[0][0])
+            total += int(value)
+
+    while total > 21 and aces:
+        total -= 10
+        aces -= 1
+
+    return total
     
 
 def resetDeck():
