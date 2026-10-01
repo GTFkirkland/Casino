@@ -58,37 +58,45 @@ def blackjack():
     loadGame("Blackjack")
     unavailableCards = []
     dealerCards = [randomCard(), randomCard()]
-    playercards = [randomCard(), randomCard()]
+    playerCards = [randomCard(), randomCard()]
     #totals
-    playerTotal = playercards[0]["value"] + playercards[1]["value"]
+    playerTotal = playerCards[0]["value"] + playerCards[1]["value"]
     dealerTotal = dealerCards[0]["value"] + dealerCards[1]["value"]
     #unavailable cards
     unavailableCards.append(dealerCards[0])
     unavailableCards.append(dealerCards[1])
-    unavailableCards.append(playercards[0])
-    unavailableCards.append(playercards[1])
+    unavailableCards.append(playerCards[0])
+    unavailableCards.append(playerCards[1])
     
     #game
     while playerTotal < 21:
         #ace check
-        if playercards[0]["num"] == "A" or playercards[1]["num"] == "A" and playerTotal > 21:
+        if playerCards[0]["num"] == "A" or playerCards[1]["num"] == "A" and playerTotal > 21:
             playerTotal -= 10
         #visuals
         print(f"{bold}Dealer's cards:\n{reset}{cyan} [??][{dealerCards[0]['num']}{dealerCards[0]['suit']}]{reset}")
-        print(f"{bold}Your cards:\n{reset}{cyan} [{playercards[0]['num']}{playercards[0]['suit']}][{playercards[1]['num']}{playercards[1]['suit']}]{reset}")
+        cardMessage = ""
+        for x in playerCards:
+            cardMessage += "[" + str(x["num"]) + str(x["suit"]) + "]"
+        print(f"{bold}Your cards:\n{reset}{cyan}{" " + cardMessage}{reset}")
         #input
+        print(playerTotal)
         choice = input(f"{red}{bold}Would you like to hit or stay?{reset}\n{yellow}{bold}<answer>> {reset}")
         #hit, stay, or invalid
         if choice == "hit":
-            playercards.append(randomCard())
-            while playercards[2] in unavailableCards:
-                playercards[2] = randomCard()
+            playerCards.append(randomCard())
+            while playerCards[len(playerCards)-1] in unavailableCards:
+                playerCards[len(playerCards)-1] = randomCard()
+            playerTotal += playerCards[len(playerCards)-1]["value"]
         elif choice == "stay":
             break
         else:
             print(f'"{yellow}{bold}{choice}{reset}" is not a valid answer\n{red}{bold}Try again{reset}')
             time.sleep(ran.randint(65,100)/100)
             line()
+    if playerTotal > 21:
+        print(f"{red}{bold}You busted and lost your bet{reset}")
+    
     
         
         
