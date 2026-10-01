@@ -22,7 +22,7 @@ def determineTotal(cards):
     total = 0
     aces = 0
     for card in cards: 
-        value = card[:-1]
+        value = card - card[len(card)-1]
         if value in ("10", "J", "Q", "K"):
             total += 10
         elif value == "A":
@@ -112,11 +112,12 @@ def blackjack():
         print(f"{bold}Dealer's cards:\n{reset}{cyan} [??][{dealerCards[1]}]{reset}")
         print(f"{bold}Your cards:\n{reset}{cyan} [{playerCards[0]}][{playerCards[1]}]{reset}")
         #input
-        #print(playerTotal) #debug
+        print(playerTotal) #debug
         choice = input(f"{red}{bold}Would you like to hit or stay?{reset}\n{yellow}{bold}<answer>> {reset}")
         #hit, stay, or invalid
         if choice == "hit":
-            None
+            playerCards.append(randomCard)
+            playerTotal = determineTotal(playerCards)
         elif choice == "stay":
             break
         else:
