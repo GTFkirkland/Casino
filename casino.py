@@ -18,6 +18,20 @@ def line():
 def showMoney():
     global money
     print(f"You have {bold}{green}${money}{reset}")
+def determineTotal(cards):
+    total = 0
+    tens = ["10♤", "J♤", "Q♤", "K♤", "10♧", "J♧", "Q♧", "K♧", "10♡", "J♡", "Q♡", "K♡", "10♢", "J♢", "Q♢", "K♢", ]
+    for x in len(cards):
+        if cards[0] in tens:
+            total += 10
+        elif "A" in cards[0]:
+            if total >= 21:
+                total += 1
+            else:
+                total += 10
+        else:
+            total += int(cards[0][0])
+    
 
 def resetDeck():
     global deck
@@ -49,11 +63,12 @@ def resetDeck():
             deck.append("A"+"♧")
             deck.append("A"+"♡")
             deck.append("A"+"♢")
+    ran.shuffle(deck)
 def randomCard():
     global deck
     #random card
-    card = ran.choice(deck)
-    deck.pop(card)
+    card = deck[0]
+    deck.pop(0)
     return card
 def loadGame(title):
     print(f"{red}{bold}Running {title}...{reset}")
@@ -72,7 +87,7 @@ def gameSelection():
     showMoney()
     while not game in gameLibrary:
         line()
-        print("Which game will you play?\n0) Exit\n1) Blackjack")
+        print("Which game will you play?\n 0) Exit\n 1) Blackjack")
         game = input(f"{yellow}{bold}<answer>> {reset}")
         if not game in gameLibrary:
             print(f'"{yellow}{bold}{game}{reset}" is not a valid answer\n{red}{bold}Try again{reset}')
@@ -82,24 +97,21 @@ def gameSelection():
 def blackjack():
     #setup
     loadGame("Blackjack")
-    playerCards = None
+    resetDeck()
+    playerCards = [randomCard(), randomCard()]
+    dealerCards = [randomCard(), randomCard()]
+    playerTotal = determineTotal(playerCards)
     #game
     while playerTotal < 21:
         #visuals
-        print(f"{bold}Dealer's cards:\n{reset}{cyan} [??][{dealerCards[0]['num']}{dealerCards[0]['suit']}]{reset}")
-        cardMessage = ""
-        for x in playerCards:
-            cardMessage += "[" + str(x["num"]) + str(x["suit"]) + "]"
-        print(f"{bold}Your cards:\n{reset}{cyan}{" " + cardMessage}{reset}")
+        print(f"{bold}Dealer's cards:\n{reset}{cyan} [??][{dealerCards[1]}]{reset}")
+        print(f"{bold}Your cards:\n{reset}{cyan} [{playerCards[0]}][{playerCards[1]}]{reset}")
         #input
-        print(playerTotal)
+        #print(playerTotal) #debug
         choice = input(f"{red}{bold}Would you like to hit or stay?{reset}\n{yellow}{bold}<answer>> {reset}")
         #hit, stay, or invalid
         if choice == "hit":
-            playerCards.append(randomCard())
-            while playerCards[len(playerCards)-1] in unavailableCards:
-                playerCards[len(playerCards)-1] = randomCard()
-            playerTotal += playerCards[len(playerCards)-1]["value"]
+            None
         elif choice == "stay":
             break
         else:
