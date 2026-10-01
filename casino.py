@@ -19,23 +19,7 @@ def showMoney():
     global money
     print(f"You have {bold}{green}${money}{reset}")
 def determineTotal(cards):
-    total = 0
-    aces = 0
-    for card in cards:
-        value = card[:-1]
-        if value in ("10", "J", "Q", "K"):
-            total += 10
-        elif value == "A":
-            total += 11
-            aces += 1
-        else:
-            total += int(value)
-
-    while total > 21 and aces:
-        total -= 10
-        aces -= 1
-
-    return total
+    
     
 
 def resetDeck():
