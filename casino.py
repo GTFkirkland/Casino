@@ -18,16 +18,42 @@ def line():
 def showMoney():
     global money
     print(f"You have {bold}{green}${money}{reset}")
+
+def resetDeck():
+    global deck
+    #make the deck
+    deck =[]
+    for i in range(2,14):
+        if i <= 10:
+            deck.append(str(i)+"♤")
+            deck.append(str(i)+"♧")
+            deck.append(str(i)+"♡")
+            deck.append(str(i)+"♢")
+        elif i == 11:
+            deck.append("J"+"♤")
+            deck.append("J"+"♧")
+            deck.append("J"+"♡")
+            deck.append("J"+"♢")
+        elif i == 12:
+            deck.append("Q"+"♤")
+            deck.append("Q"+"♧")
+            deck.append("Q"+"♡")
+            deck.append("Q"+"♢")
+        elif i == 13:
+            deck.append("K"+"♤")
+            deck.append("K"+"♧")
+            deck.append("K"+"♡")
+            deck.append("K"+"♢")
+        elif i == 14:
+            deck.append("A"+"♤")
+            deck.append("A"+"♧")
+            deck.append("A"+"♡")
+            deck.append("A"+"♢")
 def randomCard():
-    cardNums = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
-    suits = ["♤", "♧", "♡", "♢"]
-    card = {"num": ran.choice(cardNums), "suit": ran.choice(suits)}
-    if card["num"] == "J" or card["num"] == "Q" or card["num"] == "K":
-        card["value"] = 10
-    elif card["num"] == "A":
-        card["value"] = 11
-    else:
-        card["value"] = int(card["num"])
+    global deck
+    #random card
+    card = ran.choice(deck)
+    deck.pop(card)
     return card
 def loadGame(title):
     print(f"{red}{bold}Running {title}...{reset}")
@@ -56,23 +82,9 @@ def gameSelection():
 def blackjack():
     #setup
     loadGame("Blackjack")
-    unavailableCards = []
-    dealerCards = [randomCard(), randomCard()]
-    playerCards = [randomCard(), randomCard()]
-    #totals
-    playerTotal = playerCards[0]["value"] + playerCards[1]["value"]
-    dealerTotal = dealerCards[0]["value"] + dealerCards[1]["value"]
-    #unavailable cards
-    unavailableCards.append(dealerCards[0])
-    unavailableCards.append(dealerCards[1])
-    unavailableCards.append(playerCards[0])
-    unavailableCards.append(playerCards[1])
-    
+    playerCards = None
     #game
     while playerTotal < 21:
-        #ace check
-        if playerCards[0]["num"] == "A" or playerCards[1]["num"] == "A" and playerTotal > 21:
-            playerTotal -= 10
         #visuals
         print(f"{bold}Dealer's cards:\n{reset}{cyan} [??][{dealerCards[0]['num']}{dealerCards[0]['suit']}]{reset}")
         cardMessage = ""
