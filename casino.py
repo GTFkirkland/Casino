@@ -122,8 +122,40 @@ def blackjack():
         #dealer
         dealerTotal = determineTotal(dealerCards)
         if dealerTotal < playerTotal:
-            None
-
+            #hit
+            while dealerTotal < playerTotal:
+                dealerCards.append(randomCard())
+                dealerTotal = determineTotal(dealerCards)
+            if dealerTotal > 21:
+                #player win (dealer busted)
+                line(0)
+                cardMessage = ""
+                for i in dealerCards:
+                    cardMessage += "[" + i + "]"
+                print(f"{bold}Dealer's final hand:\n{reset}{cyan} {cardMessage}{reset}")
+                delay()
+                print(f"{red}{bold}The dealer busted\nYou win {green}${bet}{reset}")
+                money += int(bet)                
+            else:
+                #dealer win (dealer got high enough)
+                line(0)
+                cardMessage = ""
+                for i in dealerCards:
+                    cardMessage += "[" + i + "]"
+                print(f"{bold}Dealer's final hand:\n{reset}{cyan} {cardMessage}{reset}")
+                delay()
+                print(f"{red}{bold}The dealer beat your hand\nYou lost {green}${bet}{reset}")
+                money -= int(bet)
+        else:
+            #dealer win (auto)
+            line(0)
+            cardMessage = ""
+            for i in dealerCards:
+                cardMessage += "[" + i + "]"
+            print(f"{bold}Dealer's final hand:\n{reset}{cyan} {cardMessage}{reset}")
+            delay()
+            print(f"{red}{bold}The dealer beat your hand\nYou lost {green}${bet}{reset}")
+            money -= int(bet)
     
     
         
@@ -147,4 +179,5 @@ def playGame():
 line(2)
 print(f"{red}{bold}Welcome to Virtual Casino{reset}")
 gameSelection()
-playGame()
+while True:
+    playGame()
