@@ -62,6 +62,6 @@ def resetDeck():
 def randomCard():
     global deck
     #random card
-    card = deck[0]
+    randomCard = deck[0]
     deck.pop(0)
-    return card
+    return randomCard

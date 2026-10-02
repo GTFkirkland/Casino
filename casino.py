@@ -37,7 +37,7 @@ def gameSelection():
     showMoney()
     while not game in gameLibrary:
         line()
-        print("Which game will you play?\n 0) Exit\n 1) Blackjack")
+        print(f"{bold}Which game will you play?\n 0) Exit\n 1) Blackjack")
         game = input(f"{yellow}{bold}<answer>> {reset}")
         if not game in gameLibrary:
             print(f'"{yellow}{bold}{game}{reset}" is not a valid answer\n{red}{bold}Try again{reset}')
@@ -51,17 +51,35 @@ def blackjack():
     playerCards = [randomCard(), randomCard()]
     dealerCards = [randomCard(), randomCard()]
     playerTotal = determineTotal(playerCards)
+    #bet
+    betValid = False
+    while not betValid == True:
+        bet = input(f"{bold}How much will you bet?\n{yellow}<answer>> {reset}")
+        if type(bet) != int:
+            print(f'"{yellow}{bold}{bet}{reset}" is not a valid answer\n{red}{bold}Try again{reset}')
+            time.sleep(ran.randint(65,100)/100)
+            line()
+        else:
+            if bet < 1 or bet > money:
+                print(f'"{yellow}{bold}{bet}{reset}" is not a valid answer\n{red}{bold}Try again{reset}')
+                time.sleep(ran.randint(65,100)/100)
+                line()
+            else:
+                betValid = True
     #game
     while playerTotal < 21:
         #visuals
         print(f"{bold}Dealer's cards:\n{reset}{cyan} [??][{dealerCards[1]}]{reset}")
-        print(f"{bold}Your cards:\n{reset}{cyan} [{playerCards[0]}][{playerCards[1]}]{reset}")
+        cardMessage = ""
+        for i in playerCards:
+            cardMessage += "[" + i + "]"
+        print(f"{bold}Your cards:\n{reset}{cyan} {cardMessage}{reset}")
         #input
         print(playerTotal) #debug
         choice = input(f"{red}{bold}Would you like to hit or stay?{reset}\n{yellow}{bold}<answer>> {reset}")
         #hit, stay, or invalid
         if choice == "hit":
-            playerCards.append(randomCard)
+            playerCards.append(randomCard())
             playerTotal = determineTotal(playerCards)
         elif choice == "stay":
             break
